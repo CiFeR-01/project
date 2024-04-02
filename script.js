@@ -1,30 +1,31 @@
-const socket = new WebSocket('ws://localhost:8080');
+body {
+    font-family: Arial, sans-serif;
+}
 
-const chatOutput = document.getElementById('chat-output');
-const userInput = document.getElementById('user-input');
-const sendBtn = document.getElementById('send-btn');
+.chat-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+}
 
-// Event listener for send button
-sendBtn.addEventListener('click', () => {
-    const message = userInput.value;
-    if (message.trim() !== '') {
-        socket.send(message);
-        userInput.value = '';
-    }
-});
+#chat-output {
+    height: 300px;
+    overflow-y: scroll;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
 
-// Event listener for Enter key
-userInput.addEventListener('keypress', (event) => {
-    if (event.key === 'Enter') {
-        sendBtn.click();
-    }
-});
+#user-input {
+    width: 70%;
+    padding: 8px;
+    margin-right: 10px;
+}
 
-// Event listener for incoming messages
-socket.addEventListener('message', (event) => {
-    const message = event.data;
-    const messageElement = document.createElement('div');
-    messageElement.textContent = message;
-    chatOutput.appendChild(messageElement);
-    chatOutput.scrollTop = chatOutput.scrollHeight; // Scroll to bottom
-});
+#send-btn {
+    padding: 8px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
