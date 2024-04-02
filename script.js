@@ -1,20 +1,30 @@
-function compileAndRun() {
-    const code = document.getElementById('code').value;
-    
-    // Send code to server for compilation and execution
-    // Example: You can use AJAX (e.g., fetch API) to send the code to the server
-    
-    // For demonstration, let's assume the server responds with output
-    const output = "Hello, World!"; // Replace this with actual output from server
-    
-    // Display output
-    displayOutput(output);
-}
+const socket = new WebSocket('ws://localhost:8080');
 
-function displayOutput(output) {
-    const outputContainer = document.getElementById('output-container');
-    const outputElement = document.getElementById('output');
-    
-    outputElement.textContent = output;
-    outputContainer.style.display = 'block';
-}
+const chatOutput = document.getElementById('chat-output');
+const userInput = document.getElementById('user-input');
+const sendBtn = document.getElementById('send-btn');
+
+// Event listener for send button
+sendBtn.addEventListener('click', () => {
+    const message = userInput.value;
+    if (message.trim() !== '') {
+        socket.send(message);
+        userInput.value = '';
+    }
+});
+
+// Event listener for Enter key
+userInput.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+        sendBtn.click();
+    }
+});
+
+// Event listener for incoming messages
+socket.addEventListener('message', (event) => {
+    const message = event.data;
+    const messageElement = document.createElement('div');
+    messageElement.textContent = message;
+    chatOutput.appendChild(messageElement);
+    chatOutput.scrollTop = chatOutput.scrollHeight; // Scroll to bottom
+});
