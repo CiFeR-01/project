@@ -1,12 +1,5 @@
-// Sample product data
-const products = [
-  { name: 'Product 1', price: 10, image: 'product1.jpg' },
-  { name: 'Product 2', price: 20, image: 'product2.jpg' },
-  { name: 'Product 3', price: 30, image: 'product3.jpg' }
-];
-
 // Function to display products
-function displayProducts() {
+function displayProducts(products) {
   const productListDiv = document.getElementById('product-list');
   
   products.forEach(product => {
@@ -31,5 +24,8 @@ function displayProducts() {
   });
 }
 
-// Display products when the page loads
-document.addEventListener('DOMContentLoaded', displayProducts);
+// Fetch product data from server
+fetch('/api/products')
+  .then(response => response.json())
+  .then(products => displayProducts(products))
+  .catch(error => console.error('Error fetching product data:', error));
