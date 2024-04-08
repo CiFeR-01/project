@@ -1,16 +1,16 @@
 const express = require('express');
 const xlsx = require('xlsx');
+const path = require('path');
 const app = express();
 
-// Serve the HTML file
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
-});
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 // API endpoint to get product data
 app.get('/api/products', (req, res) => {
   // Load the Excel file
-  const workbook = xlsx.readFile('product.xlsx');
+  const filePath = path.join(__dirname, 'data', 'product.xlsx');
+  const workbook = xlsx.readFile(filePath); // Assuming the Excel file is named products.xlsx
   const sheetName = workbook.SheetNames[0];
   const worksheet = workbook.Sheets[sheetName];
   
@@ -22,7 +22,7 @@ app.get('/api/products', (req, res) => {
 });
 
 // Start the server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
